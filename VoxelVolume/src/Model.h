@@ -14,16 +14,24 @@ private:
 	std::vector<glm::vec3> m_vertexArray;
 	std::vector<glm::vec3> m_normalArray;
 	std::vector<glm::vec2> m_texCoordArray;
+	bool initialized;
 
 public:
 	unsigned int numIndices;
 
+
+	Model();
 	Model(const std::string& filepath);
-	//Model(float widht, float depth);
+
+
+	~Model();
+	bool hasModel();
+	void loadModel(const std::string& filepath);
+	void createFlatGroundModelSimple(float width, float depth);
 	//Model(float width, float depth, int numRows, int numCols);
 	//Model(float width, float depth, float height, TextureData* mapTexture);
-	~Model();
-	void loadThroughTiny(const std::string& filepath);
+
+	
 
 	void render();
 
@@ -35,4 +43,7 @@ public:
 	std::vector<glm::vec3> getVertexArray() { return m_vertexArray; }
 	std::vector<glm::vec3> getNormalArray() { return m_normalArray; }
 	std::vector<glm::vec2> getTexCoordArray() { return m_texCoordArray; }
+private: 
+	void loadThroughTiny(const std::string& filepath);
+	void createFlatGround(float width, float depth);
 };

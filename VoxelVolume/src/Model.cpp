@@ -8,8 +8,26 @@
 
 #include "Renderer.h"
 
+Model::Model() {
+    initialized = false;
+}
+
 Model::Model(const std::string& filepath) {
     loadThroughTiny(filepath);
+    initialized = true;
+}
+
+bool Model::hasModel() {
+    return initialized;
+}
+
+void Model::loadModel(const std::string& filepath) {
+    loadThroughTiny(filepath);
+    initialized = true;
+}
+
+void Model::createFlatGroundModelSimple(float width, float depth) {
+    createFlatGround(width, depth);
 }
 
 //Model::Model(float width, float depth) {
@@ -26,9 +44,30 @@ Model::Model(const std::string& filepath) {
 //}
 
 Model::~Model() {
-    glDeleteVertexArrays(1, &m_VAO);
-    glDeleteBuffers(1, &m_VBO);
-    glDeleteBuffers(1, &m_EBO);
+    if (initialized) {
+        glDeleteVertexArrays(1, &m_VAO);
+        glDeleteBuffers(1, &m_VBO);
+        glDeleteBuffers(1, &m_EBO);
+    }
+    
+}
+
+
+
+void Model::render() {
+    glBindVertexArray(m_VAO);
+    glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
+}
+
+
+
+void Model::Bind() const {
+
+}
+
+void Model::Unbind() const {
+
 }
 
 void Model::loadThroughTiny(const std::string& filepath) {
@@ -162,20 +201,55 @@ void Model::loadThroughTiny(const std::string& filepath) {
     m_indexCount = static_cast<GLsizei>(indices.size());
 }
 
-void Model::render() {
-    glBindVertexArray(m_VAO);
-    glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+void Model::createFlatGround(float width, float depth) {
+    // Create vertex data
+    std::vector<float> vertices = {
+        // Positions                            // Normals          // Texture Coords
+        -width / 2.0f, 0.0f, -depth / 2.0f,     0.0f, 1.0f, 0.0f,     0.0f, 0.0f,
+         width / 2.0f, 0.0f, -depth / 2.0f,     0.0f, 1.0f, 0.0f,     1.0f, 0.0f,
+         width / 2.0f, 0.0f,  depth / 2.0f,     0.0f, 1.0f, 0.0f,     1.0f, 1.0f,
+        -width / 2.0f, 0.0f,  depth / 2.0f,     0.0f, 1.0f, 0.0f,     0.0f, 1.0f
+    };
+
+    // Create index data
+    std::vector<unsigned int> indices = {
+        0, 1, 2,
+        2, 3, 0
+    };
+
+    GLuint VAO, VBO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    // Bind and populate VAO
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), indices.data(), GL_STATIC_DRAW);
+
+    // Set vertex attribute pointers
+    GLsizei stride = 8 * sizeof(float); // 3 for position, 3 for normals, and 2 for texture coordinates
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(0));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(3 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride, reinterpret_cast<void*>(6 * sizeof(float)));
+
+    // Unbind the VAO
     glBindVertexArray(0);
-}
 
-
-
-void Model::Bind() const {
-
-}
-
-void Model::Unbind() const {
-
+    // Store the VAO and other related information in your ModelObject class, assuming you have the following member variables:
+    // GLuint m_VAO;
+    // GLuint m_VBO;
+    // GLuint m_EBO;
+    // GLsizei m_indexCount;
+    m_VAO = VAO;
+    m_VBO = VBO;
+    m_EBO = EBO;
+    m_indexCount = static_cast<GLsizei>(indices.size());
 }
 
 //void Model::createFlatGround(float width, float depth) {

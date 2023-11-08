@@ -139,6 +139,8 @@
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
+    <ClCompile Include="src\VoxelPlayground\Player.cpp" />
+    <ClCompile Include="src\VoxelPlayground\Space.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LoadTGA.h" />
@@ -147,6 +149,12 @@
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\VoxelPlayground\Player.h" />
+    <ClInclude Include="src\VoxelPlayground\Space.h" />
+    <ClInclude Include="src\VoxelUtils\ButtonMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\Basic.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

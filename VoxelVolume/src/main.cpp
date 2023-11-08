@@ -7,17 +7,11 @@
 #include <string>
 #include <sstream>
 
-#include "Renderer.h"
+#include "Renderer.h";
+#include "VoxelUtils/ButtonMap.h"
 
+#include "VoxelPlayground/Space.h"
 
-
-
-struct ButtonMap {
-    bool W, A, S, D;
-    bool Space;
-    bool Up, Down, Left, Right;
-    bool Ctrl;
-};
 
 ButtonMap bm;
 
@@ -138,6 +132,8 @@ int main() {
 
     float lastTime = glfwGetTime();
 
+    Space* spejs = new Space();
+
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -147,6 +143,8 @@ int main() {
         lastTime = currentTime;
 
         glClear(0.0);
+
+        spejs->tick(deltaTime, bm);
 
         // renderer.Clear();
 
