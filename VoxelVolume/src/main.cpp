@@ -1,19 +1,30 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 
-#include "Renderer.h";
-#include "VoxelUtils/ButtonMap.h"
+
+#include "Renderer.h"
+#include "Shader.h"
+#include "Texture.h"
+
 
 #include "VoxelPlayground/Space.h"
 
+#include "VoxelPlayground/Player.h"
+#include "VoxelPlayground/Camera.h"
+
+#include "Utils/ButtonMap.h"
 
 ButtonMap bm;
+
+Space* space;
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     // Close the window when the user presses the ESC key
@@ -31,7 +42,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
             break;
         case GLFW_KEY_S:
             bm.S = true;
-            std::cout << "hej" << std::endl;
             break;
         case GLFW_KEY_D:
             bm.D = true;
@@ -93,7 +103,8 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 
-int main() {
+int main(void)
+{
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -106,7 +117,7 @@ int main() {
     glfwWindowHint(GLFW_DEPTH_BITS, 24);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1600, 900, "Voxel Project", NULL, NULL);
+    window = glfwCreateWindow(1600, 900, "Project Birdo", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -128,12 +139,17 @@ int main() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     GLCall(glEnable(GL_DEPTH_TEST));
     //glEnable(GL_CULL_FACE);
-    //glEnable(GL_DEPTH_TEST);
+
+    Renderer renderer;
+
+    Texture texture("res/textures/grass.tga");
+    texture.Bind();
+
+    space = new Space();
 
     float lastTime = glfwGetTime();
 
-    Space* spejs = new Space();
-
+    /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -142,14 +158,10 @@ int main() {
         float deltaTime = currentTime - lastTime;
         lastTime = currentTime;
 
-        glClear(0.0);
+        renderer.Clear();
 
-        spejs->tick(deltaTime, bm);
-
-        // renderer.Clear();
-
-        //space->tick(deltaTime, bm);
-        //space->renderWorld(deltaTime);
+        space->tick(deltaTime, bm);
+        space->renderWorld(deltaTime);
 
         /* Swap front and back buffers */
         glfwSwapBuffers(window);
@@ -158,15 +170,6 @@ int main() {
         glfwPollEvents();
     }
 
-
-
-    glm::vec3 test = glm::vec3(1.0);
-
-    std::cout << "Hello, World! - " << test.x << std::endl;
-
-    test.x += 2;
-
-    std::cout << test.x << " " << test.y << " " << test.z << std::endl;
-
+    glfwTerminate();
     return 0;
 }

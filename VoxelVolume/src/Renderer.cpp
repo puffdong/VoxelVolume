@@ -1,5 +1,8 @@
 #include "Renderer.h"
+
+
 #include <iostream>
+
 
 void GLClearError() {
     while (glGetError() != GL_NO_ERROR);
@@ -17,7 +20,10 @@ void Renderer::Clear() const {
     GLCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT))
 }
 
-//void Renderer::DrawObject(Shader& shader, ModelObject& m) {
-//    shader.Bind();
-//    m.render();
-//}
+void Renderer::DrawObject(Shader& shader, ModelObject& m) {
+    shader.Bind();
+    m.render();
+
+
+}
+

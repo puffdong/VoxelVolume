@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 
 #include "Renderer.h"
 #include "LoadTGA.h"
