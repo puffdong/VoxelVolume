@@ -1,6 +1,8 @@
 #include "Space.h"
 #include <iostream>
 
+#include "Volumetrics/VoxelStructure.h"
+
 Space::Space()
 	: perlinNoise("res/textures/perlinnoise.tga")
 {
@@ -9,6 +11,11 @@ Space::Space()
 
 	glm::vec3 cameraDir(0.f, 0.f, 1.f);
 	camera = new Camera(cameraDir, player);
+
+	VoxelStructure* v = new VoxelStructure(5, 5, 5, glm::ivec3(1, 1, 1), 1, 0.5f);
+	v->setVoxelValue(2, 2, 2, 3);
+	std::cout << v->getVoxelValue(2, 2, 2) << std::endl;
+	std::cout << v->getVoxelValue(2, 2, 3) << std::endl;
 
 	loadLevel1();
 }

@@ -142,11 +142,11 @@
     <ClInclude Include="src\Utils\ButtonMap.h" />
     <ClInclude Include="src\Utils\LightSource.h" />
     <ClInclude Include="src\VoxelPlayground\Camera.h" />
-    <ClInclude Include="src\VoxelPlayground\Coin.h" />
     <ClInclude Include="src\VoxelPlayground\Ground.h" />
     <ClInclude Include="src\VoxelPlayground\Player.h" />
     <ClInclude Include="src\VoxelPlayground\Skybox.h" />
     <ClInclude Include="src\VoxelPlayground\Space.h" />
+    <ClInclude Include="src\VoxelPlayground\Volumetrics\VoxelStructure.h" />
     <ClInclude Include="src\VoxelPlayground\Water.h" />
     <ClInclude Include="src\VoxelPlayground\WorldObject.h" />
   </ItemGroup>
@@ -158,11 +158,11 @@
     <ClCompile Include="src\Shader.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\VoxelPlayground\Camera.cpp" />
-    <ClCompile Include="src\VoxelPlayground\Coin.cpp" />
     <ClCompile Include="src\VoxelPlayground\Ground.cpp" />
     <ClCompile Include="src\VoxelPlayground\Player.cpp" />
     <ClCompile Include="src\VoxelPlayground\Skybox.cpp" />
     <ClCompile Include="src\VoxelPlayground\Space.cpp" />
+    <ClCompile Include="src\VoxelPlayground\Volumetrics\VoxelStructure.cpp" />
     <ClCompile Include="src\VoxelPlayground\Water.cpp" />
     <ClCompile Include="src\VoxelPlayground\WorldObject.cpp" />
   </ItemGroup>
